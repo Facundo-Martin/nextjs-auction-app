@@ -10,8 +10,10 @@ export default async function Home() {
   const allItems = await database.query.items.findMany();
 
   return (
-    <main className="container mx-auto py-12">
+    <main className="container mx-auto py-12 space-y-8">
+      <h1 className="text-4xl font-bold">Post an Item to Sell</h1>
       <form
+        className="border p-8 rounded-xl space-y-4 max-w-lg flex flex-col"
         action={async (formData: FormData) => {
           "use server";
 
@@ -22,13 +24,20 @@ export default async function Home() {
         }}
       >
         <Input name="name" type="text" placeholder="Name your item" />
-        <Button type="submit">Post item</Button>
+        <Button className="self-end" type="submit">
+          Post item
+        </Button>
       </form>
 
+      <h2 className="text-2xl font-bold">Items For Sale</h2>
       <div className="space-y-2.5">
-        {allItems.map((x) => (
-          <div key={x.id}>{x.name}</div>
-        ))}
+        <div className="grid grid-cols-4 gap-8">
+          {allItems.map((x) => (
+            <div key={x.id} className="border p-8 rounded-xl">
+              {x.name}
+            </div>
+          ))}
+        </div>
       </div>
     </main>
   );
