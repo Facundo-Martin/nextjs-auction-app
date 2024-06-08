@@ -1,9 +1,11 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { database } from "@/db/database";
 import { bids as bidsSchema } from "@/db/schema";
+import { revalidatePath } from "next/cache";
 
 export default async function Home() {
   const bids = await database.query.bids.findMany();
-  console.log(bids);
 
   return (
     <main className="container mx-auto py-12">
@@ -13,10 +15,11 @@ export default async function Home() {
 
           const bid = formData.get("bid") as string;
           await database.insert(bidsSchema).values({});
+          revalidatePath("/");
         }}
       >
-        <input name="bid" type="number" placeholder="Bid" />
-        <button type="submit">Place bid</button>
+        <Input name="bid" type="number" placeholder="Bid" />
+        <Button type="submit">Place bid</Button>
       </form>
 
       <div className="space-y-2.5">
