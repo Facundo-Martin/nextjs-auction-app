@@ -1,3 +1,6 @@
+import { auth } from "@/auth";
+import { SignIn } from "@/components/sign-in";
+import { SignOut } from "@/components/sign-out";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { database } from "@/db/database";
@@ -6,9 +9,12 @@ import { revalidatePath } from "next/cache";
 
 export default async function Home() {
   const bids = await database.query.bids.findMany();
+  const session = await auth();
 
   return (
     <main className="container mx-auto py-12">
+      {session ? <SignOut /> : <SignIn />}
+      {session?.user && <p>{session.user.name}</p>}
       <form
         action={async (formData: FormData) => {
           "use server";
