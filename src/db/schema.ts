@@ -11,10 +11,6 @@ import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
 import type { AdapterAccountType } from "next-auth/adapters";
 
-export const bids = pgTable("bb_bids", {
-  id: serial("id").primaryKey(),
-});
-
 const connectionString = "postgres://postgres:postgres@localhost:5432/drizzle";
 const pool = postgres(connectionString, { max: 1 });
 
@@ -96,3 +92,15 @@ export const authenticators = pgTable(
     }),
   })
 );
+
+export const bids = pgTable("bb_bids", {
+  id: serial("id").primaryKey(),
+});
+
+export const items = pgTable("bb_item", {
+  id: serial("id").primaryKey(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+});

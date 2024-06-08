@@ -4,12 +4,12 @@ import { SignOut } from "@/components/sign-out";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { database } from "@/db/database";
-import { bids as bidsSchema } from "@/db/schema";
+import { items } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 
 export default async function Home() {
-  const bids = await database.query.bids.findMany();
   const session = await auth();
+  const allItems = await database.query.items.findMany();
 
   return (
     <main className="container mx-auto py-12">
@@ -19,18 +19,19 @@ export default async function Home() {
         action={async (formData: FormData) => {
           "use server";
 
-          const bid = formData.get("bid") as string;
-          await database.insert(bidsSchema).values({});
+          const name = formData.get("name") as string;
+          const userId = session?.user?.id!;
+          await database.insert(items).values({ name, userId });
           revalidatePath("/");
         }}
       >
-        <Input name="bid" type="number" placeholder="Bid" />
-        <Button type="submit">Place bid</Button>
+        <Input name="name" type="text" placeholder="Name your item" />
+        <Button type="submit">Post item</Button>
       </form>
 
       <div className="space-y-2.5">
-        {bids.map((x) => (
-          <div key={x.id}>Bid number {x.id}</div>
+        {allItems.map((x) => (
+          <div key={x.id}>{x.name}</div>
         ))}
       </div>
     </main>
