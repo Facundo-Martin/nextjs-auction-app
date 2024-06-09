@@ -1,10 +1,9 @@
-import { auth } from "@/auth";
-import { database } from "@/db/database";
 import Image from "next/image";
 
-function getImageUrl(fileKey: string) {
-  return `https://pub-6e66d7b5eec84b4189a8ca7e50287a49.r2.dev/${fileKey}`;
-}
+import { auth } from "@/auth";
+import { database } from "@/db/database";
+import { getImageUrl } from "@/utils/files";
+
 export default async function Home() {
   const session = await auth();
   const allItems = await database.query.items.findMany();
