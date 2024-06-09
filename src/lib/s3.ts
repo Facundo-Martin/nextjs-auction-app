@@ -11,10 +11,14 @@ const s3Client = new S3Client({
   },
 });
 
-export async function getSignedUrlForS3Object(key: string) {
+export async function getSignedUrlForS3Object(key: string, type: string) {
   return await getSignedUrl(
     s3Client,
-    new PutObjectCommand({ Bucket: env.BUCKET_NAME, Key: key }),
+    new PutObjectCommand({
+      Bucket: env.BUCKET_NAME,
+      Key: key,
+      ContentType: type,
+    }),
     { expiresIn: 3600 }
   );
 }

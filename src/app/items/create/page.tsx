@@ -19,7 +19,7 @@ export default function Page() {
           const formData = new FormData(form);
           const file = formData.get("file") as File;
 
-          const uploadUrl = await createUploadUrlAction(file.name);
+          const uploadUrl = await createUploadUrlAction(file.name, file.type);
 
           const uploadFormData = new FormData();
           uploadFormData.append("file", file);
@@ -27,6 +27,9 @@ export default function Page() {
           await fetch(uploadUrl, {
             method: "PUT",
             body: uploadFormData,
+            headers: {
+              "Content-Type": file.type,
+            },
           });
 
           await createItemAction(formData);
