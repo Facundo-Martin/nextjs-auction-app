@@ -32,7 +32,16 @@ export default function Page() {
             },
           });
 
-          await createItemAction(formData);
+          const name = formData.get("name") as string;
+          const startingPrice = Number(formData.get("startingPrice"));
+          const startingPriceInCents = Math.floor(startingPrice * 100);
+          const fileName = file.name;
+
+          await createItemAction({
+            name,
+            startingPrice: startingPriceInCents,
+            fileName,
+          });
         }}
       >
         <Input required name="name" type="text" placeholder="Name your item" />
