@@ -21,15 +21,9 @@ export default function Page() {
 
           const uploadUrl = await createUploadUrlAction(file.name, file.type);
 
-          const uploadFormData = new FormData();
-          uploadFormData.append("file", file);
-
           await fetch(uploadUrl, {
             method: "PUT",
-            body: uploadFormData,
-            headers: {
-              "Content-Type": file.type,
-            },
+            body: file,
           });
 
           const name = formData.get("name") as string;

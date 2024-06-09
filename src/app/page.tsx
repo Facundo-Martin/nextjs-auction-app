@@ -1,6 +1,10 @@
 import { auth } from "@/auth";
 import { database } from "@/db/database";
+import Image from "next/image";
 
+function getImageUrl(fileKey: string) {
+  return `https://pub-6e66d7b5eec84b4189a8ca7e50287a49.r2.dev/${fileKey}`;
+}
 export default async function Home() {
   const session = await auth();
   const allItems = await database.query.items.findMany();
@@ -12,6 +16,12 @@ export default async function Home() {
         <div className="grid grid-cols-4 gap-8">
           {allItems.map((x) => (
             <div key={x.id} className="border p-8 rounded-xl">
+              <Image
+                src={getImageUrl(x.fileKey)}
+                alt={x.name}
+                width={200}
+                height={200}
+              />
               <p>{x.name}</p>
               <p>startingPrice: ${x.startingPrice / 100}</p>
             </div>
