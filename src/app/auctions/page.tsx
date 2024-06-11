@@ -1,8 +1,7 @@
 import { database } from "@/db/database";
 import { ItemCard } from "@/components/item-card";
 import { auth } from "@/auth";
-import { eq } from "drizzle-orm";
-import { items } from "@/db/schema";
+import { EmptyState } from "./empty-state";
 
 export default async function Home() {
   const session = await auth();
@@ -17,13 +16,17 @@ export default async function Home() {
   });
 
   return (
-    <main className="container mx-auto py-12 space-y-8">
-      <h1 className="text-4xl font-bold">My auctions page</h1>
-      <div className="grid grid-cols-4 gap-8">
-        {allItems.map((item) => (
-          <ItemCard key={item.id} {...item} />
-        ))}
-      </div>
+    <main className="py-12">
+      <h1 className="text-4xl font-bold">Your Current Auctions</h1>
+      {allItems.length === 0 ? (
+        <EmptyState />
+      ) : (
+        <div className="grid grid-cols-4 gap-8 mt-8">
+          {allItems.map((item) => (
+            <ItemCard key={item.id} {...item} />
+          ))}
+        </div>
+      )}
     </main>
   );
 }

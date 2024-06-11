@@ -8,7 +8,7 @@ import { createItemAction, createUploadUrlAction } from "./actions";
 
 export default function Page() {
   return (
-    <main className="container mx-auto py-12 space-y-8">
+    <main className="space-y-8">
       <h1 className="text-4xl font-bold">Post an Item</h1>
       <form
         className="border p-8 rounded-xl space-y-4 max-w-lg flex flex-col"
