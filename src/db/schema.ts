@@ -93,17 +93,24 @@ export const authenticators = pgTable(
   })
 );
 
-export const bids = pgTable("bb_bids", {
-  id: serial("id").primaryKey(),
-});
-
 export const items = pgTable("bb_item", {
   id: serial("id").primaryKey(),
-  userId: text("userId")
+  userId: serial("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
   fileKey: text("fileKey").notNull(),
   startingPrice: integer("startingPrice").notNull().default(0),
   bidInterval: integer("bidInterval").notNull().default(100),
+});
+
+export const bids = pgTable("bb_bids", {
+  id: serial("id").primaryKey(),
+  amount: integer("amount").notNull(),
+  itemId: serial("itemId")
+    .notNull()
+    .references(() => items.id, { onDelete: "cascade" }),
+  userId: serial("itemId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
 });
