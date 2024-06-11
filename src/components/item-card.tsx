@@ -3,6 +3,7 @@ import { getImageUrl } from "@/utils/files";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { formatToDollar } from "@/utils/currency";
 
 type AuctionItem = typeof items.$inferSelect;
 
@@ -17,7 +18,9 @@ export function ItemCard(props: AuctionItem) {
         className="object-cover"
       />
       <p className="text-xl font-bold">{props.name}</p>
-      <p className="text-lg">startingPrice: ${props.startingPrice / 100}</p>
+      <p className="text-lg">
+        startingPrice: ${formatToDollar(props.startingPrice)}
+      </p>
       <Button asChild>
         <Link href={`/items/${props.id}`}>Place Bid</Link>
       </Button>
